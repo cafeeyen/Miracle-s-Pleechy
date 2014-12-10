@@ -7,16 +7,15 @@ root.title('Miracle\'s Pleechy')
 
 explanation = """ Your score  :  """
 name = """
-    By Chunyanuch 57070027 & Yin 570700..
+    By Chunyanuch 57070027 & Suttinee 570700113
     """
+
 score = 0
 timer = Timer(0, None)
-
 logo = PhotoImage(file="banner.gif")#edit position here
-w1 = Label(root, image=logo).grid(row=0)
 
-w2 = Label(root, text = name).grid(row=1)
-
+wlogo = Label(root, image=logo).grid(row=0)
+wname = Label(root, text=name).grid(row=1)
 
 wscore = Label(root, 
            justify=LEFT,
@@ -67,11 +66,18 @@ def question():
 def check():
     """Check the answer."""
     global num_a, num_b
-    if int(ansbox.get()) == num_a + num_b:
+    ans = ansbox.get()
+    try:
+        int(ans)
+    except ValueError:
+        ans = ''
+    ansbox.delete(0, END)
+    if ans == '':
+        ansbox.insert(END, '---Please answer---')
+    elif float(ans) == num_a + num_b:
         one()
     else:
         two()
-    ansbox.delete(0, END)
 
 
 def one():
@@ -81,6 +87,7 @@ def one():
     #Credit art ascii from http://www.heartnsoul.com/ascii_art/sheep.txt
     #http://textart4u.blogspot.com/2013/05/game-over-text-art.html
     print """
+
         .-:\'  `; `-._ 
        (_,           )
      ,\'o"(            )>
@@ -99,11 +106,14 @@ def one():
 
 def two():
     print """
+
     ███▀▀▀██┼███▀▀▀███┼███▀█▄█▀███┼██▀▀▀
     ██┼┼┼┼██┼██┼┼┼┼┼██┼██┼┼┼█┼┼┼██┼██┼┼┼
     ██┼┼┼▄▄▄┼██▄▄▄▄▄██┼██┼┼┼▀┼┼┼██┼██▀▀▀
     ██┼┼┼┼██┼██┼┼┼┼┼██┼██┼┼┼┼┼┼┼██┼██┼┼┼
     ███▄▄▄██┼██┼┼┼┼┼██┼██┼┼┼┼┼┼┼██┼██▄▄▄
+
+
     ███▀▀▀███┼▀███┼┼██▀┼██▀▀▀┼██▀▀▀▀██▄┼
     ██┼┼┼┼┼██┼┼┼██┼┼██┼┼██┼┼┼┼██┼┼┼┼┼██┼
     ██┼┼┼┼┼██┼┼┼██┼┼██┼┼██▀▀▀┼██▄▄▄▄▄▀▀┼
