@@ -1,5 +1,4 @@
 from Tkinter import *
-from threading import *
 from random import *
 
 root = Tk()
@@ -11,21 +10,19 @@ name = """
     """
 
 score = 0
-timer = Timer(0, None)
+timer = 0
 logo = PhotoImage(file="banner.gif")#edit position here
 
 wlogo = Label(root, image=logo).grid(row=0)
 wname = Label(root, text=name).grid(row=1)
 
-wscore = Label(root, justify=LEFT,padx = 10, text=explanation+'0')
+wscore = Label(root, padx = 10, text=explanation+'0')
 wscore.grid(row=2)
 
-wtime = Label(root, justify=LEFT, padx = 10, text='Time : %d' % 0)
+wtime = Label(root, padx = 10, text='Time : -')
 wtime.grid(row=3)
 
-wask = Label(root, 
-           padx = 10, 
-           text=' ')
+wask = Label(root, padx = 10, text=' ')
 wask.grid(row=4)
 
 
@@ -34,8 +31,8 @@ def start_time(sec, top):
     #Can't show how many time left
     Quit(top)
     global timer
-    timer = Timer(sec, two)
-    timer.start()
+    timer = sec
+    tick()
     start.config(text='Sent', command=check)
     question()
     
@@ -48,6 +45,16 @@ def set_time():
     t_2 = Button(top, text='2 Minute', width=50,
                  command=lambda: start_time(120, top)).grid(row=1)
 
+
+def tick():
+    global timer
+    wtime.config(text='Time : %s' % str(timer))
+    if timer == 0:
+        two()
+    elif isinstance(timer, int):
+        timer -= 1
+        wtime.after(1000, tick)
+    
 
 def question():
     """Make question."""
@@ -115,13 +122,13 @@ def two():
     ███▄▄▄███┼┼┼─▀█▀┼┼─┼██▄▄▄┼██┼┼┼┼┼██▄
     """
     global score, timer
+    timer = '-'
+    tick()
     score = 0
-    timer.cancel()
     start.config(text='Start Game', command=set_time)
     
 
 def Quit(window):
-    timer.cancel()
     window.destroy()
     
 ansbox = Entry(width=60)
