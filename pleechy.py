@@ -6,25 +6,27 @@ root = Tk()
 root.title('Miracle\'s Pleechy')
 
 explanation = """ Your score  :  """
+name = """
+    By Chunyanuch 57070027 & Suttinee 57070113
+    """
+
 score = 0
 timer = Timer(0, None)
+logo = PhotoImage(file="banner.gif")#edit position here
 
-wscore = Label(root, 
-           justify=LEFT,
-           padx = 10, 
-           text=explanation+'0')
-wscore.grid(row=1)
+wlogo = Label(root, image=logo).grid(row=0)
+wname = Label(root, text=name).grid(row=1)
 
-wtime = Label(root, 
-           justify=LEFT,
-           padx = 10, 
-           text='Time : %d' % 0)
-wtime.grid(row=2)
+wscore = Label(root, justify=LEFT,padx = 10, text=explanation+'0')
+wscore.grid(row=2)
+
+wtime = Label(root, justify=LEFT, padx = 10, text='Time : %d' % 0)
+wtime.grid(row=3)
 
 wask = Label(root, 
            padx = 10, 
            text=' ')
-wask.grid(row=3)
+wask.grid(row=4)
 
 
 def start_time(sec, top):
@@ -58,11 +60,18 @@ def question():
 def check():
     """Check the answer."""
     global num_a, num_b
-    if int(ansbox.get()) == num_a + num_b:
+    ans = ansbox.get()
+    try:
+        int(ans)
+    except ValueError:
+        ans = ''
+    ansbox.delete(0, END)
+    if ans == '':
+        ansbox.insert(END, '---Please answer---')
+    elif float(ans) == num_a + num_b:
         one()
     else:
         two()
-    ansbox.delete(0, END)
 
 
 def one():
@@ -116,12 +125,12 @@ def Quit(window):
     window.destroy()
     
 ansbox = Entry(width=60)
-ansbox.grid(row=4)
+ansbox.grid(row=5)
 
 start = Button(text='Start Game', width=50, command=set_time)
-start.grid(row=5)
+start.grid(row=6)
 
 out = Button(text='Quit', width=50, command=lambda: Quit(root))
-out.grid(row=6)
+out.grid(row=7)
 
 root.mainloop()
