@@ -17,7 +17,7 @@ wgame.grid(row=0)
 wscore = Label(root, padx = 10, text=explanation+'0')
 wscore.grid(row=1)
 
-wtime = Label(root, padx = 10, text='Time : -')
+wtime = Label(root, padx = 10, text='Time : Game Over')
 wtime.grid(row=2)
 
 wask = Label(root, padx = 10, text=' ')
