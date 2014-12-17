@@ -78,7 +78,7 @@ def check():
         ans = ''
     ansbox.delete(0, END)
     if ans == '':
-        ansbox.insert(END, '---Please answer---')
+        ansbox.insert(END, '---Please answer number---')
     elif float(ans) == num_a + num_b:
         one()
     else:
