@@ -27,6 +27,7 @@ def start_time(sec):
     global timer, ansbox
     btn_0.destroy()
     gamebg.config(file="pic/jump0.gif")
+    ansbox = Entry(width=60)
     ansbox.grid(row=4)
     
     timer = sec
@@ -129,8 +130,6 @@ wgame = Label(root, image=gamebg, borderwidth=0)
 wscore = Label(root, text=" Your score  :  0", fg="white", bg="black")
 wtime = Label(root, text="Time : -", fg="white", bg="black")
 wask = Label(root, text="Welcome", fg="white", bg="black")
-
-ansbox = Entry(width=60)
 
 btn_1 = Button(image=btn_img_1, bg="black", activebackground="black",\
                borderwidth=0, command=set_time)
