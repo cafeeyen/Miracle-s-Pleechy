@@ -45,7 +45,7 @@ def tick():
     global timer
     wtime.config(text="Time : %s" % str(timer))
     if timer == 0:
-        two()
+        wrong()
     elif isinstance(timer, int):
         timer -= 1
         wtime.after(1000, tick)
