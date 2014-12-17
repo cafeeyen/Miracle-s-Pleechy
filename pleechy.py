@@ -1,8 +1,9 @@
 from Tkinter import *
-from random import *
+from random import randint
 
 root = Tk()
 root.title('Miracle\'s Pleechy')
+root.config(bg='black')
 
 explanation = """ Your score  :  """
 
@@ -10,24 +11,27 @@ state = 0
 score = 0
 timer = 0
 gamebg = PhotoImage(file="pic/main.gif")
+btn_img_0 = PhotoImage(file="pic/un.gif")
+btn_img_1 = PhotoImage(file="pic/start.gif")
+btn_img_2 = PhotoImage(file="pic/quit.gif")
 
-wgame = Label(root, image=gamebg)
+wgame = Label(root, image=gamebg, borderwidth=0)
 wgame.grid(row=0)
 
-wscore = Label(root, padx = 10, text=explanation+'0')
+wscore = Label(root, text=explanation+'0', fg='white', bg='black')
 wscore.grid(row=1)
 
-wtime = Label(root, padx = 10, text='Time : Game Over')
+wtime = Label(root, text='Time : -', fg='white', bg='black')
 wtime.grid(row=2)
 
-wask = Label(root, padx = 10, text=' ')
+wask = Label(root, text=' ', fg='white', bg='black')
 wask.grid(row=3)
 
 
 def start_time(sec):
     """Start timer"""
     #Can't show how many time left
-    bnt_0.destroy()
+    btn_0.destroy()
     gamebg.config(file="pic/jump0.gif")
     global timer, ansbox
     ansbox = Entry(width=60)
@@ -35,19 +39,23 @@ def start_time(sec):
     timer = sec
     tick()
     wscore.config(text=explanation+str(score))
-    bnt_1.config(text='Sent', command=check)
-    bnt_2.config(text='Quit', command=root.destroy)
+    btn_img_1.config(file="pic/sent.gif")
+    btn_1.config(command=check)
+    btn_img_2.config(file="pic/quit.gif")
+    btn_2.config(command=root.destroy)
     question()
     
 
 def set_time():
-    global bnt_0
+    global btn_0
     wask.config(text="Choose Time")
-    bnt_0 = Button(text='Unlimited', width=50,
-                   command=lambda: start_time('Unlimited'))
-    bnt_0.grid(row=4)
-    bnt_1.config(text='1 Minute', command=lambda: start_time(60))
-    bnt_2.config(text='2 Minute', command=lambda: start_time(120))
+    btn_0 = Button(image=btn_img_0, bg='black', activebackground='black',\
+                   borderwidth=0, command=lambda: start_time('Unlimited'))
+    btn_0.grid(row=4)
+    btn_img_1.config(file="pic/1.gif")
+    btn_1.config(command=lambda: start_time(60))
+    btn_img_2.config(file="pic/2.gif")
+    btn_2.config(command=lambda: start_time(120))
 
 
 def tick():
@@ -62,15 +70,17 @@ def tick():
 
 def question():
     """Make question."""
-    global num_a, num_b
+    global num_a, num_b, ran
+    sign = ['+', '-']
     num_a = randint(1, 100)
     num_b = randint(1, 100)
-    wask.config(text='%d + %d = ?' % (num_a, num_b))
+    ran = randint(0, 1)
+    wask.config(text='%d %s %d = ?' % (num_a, sign[ran], num_b))
 
 
 def check():
     """Check the answer."""
-    global num_a, num_b
+    global num_a, num_b, ran
     ans = ansbox.get()
     try:
         int(ans)
@@ -79,7 +89,9 @@ def check():
     ansbox.delete(0, END)
     if ans == '':
         ansbox.insert(END, '---Please answer number---')
-    elif float(ans) == num_a + num_b:
+    elif ran == 0 and float(ans) == num_a + num_b:
+        one()
+    elif ran == 1 and float(ans) == num_a - num_b:
         one()
     else:
         two()
@@ -103,28 +115,29 @@ def jump():
         gamebg.config(file="pic/jump%d.gif" % state)
         return 0
     wgame.after(75, jump)
-    
-    
+
 
 def two():
-    global score, timer, state
+    global score, timer, state, ran
     ansbox.destroy()
     gamebg.config(file="pic/main.gif")
-    timer = '-'
+    timer = 'Game Over'
     tick()
     score, state = 0, 0
-    wask.config(text='%d + %d = %d' % (num_a, num_b, num_a + num_b))
-    bnt_1.config(text='Start Game', command=set_time)
-    
+    if ran == 0:
+        wask.config(text='%d + %d = %d' % (num_a, num_b, num_a + num_b))
+    else:
+        wask.config(text='%d - %d = %d' % (num_a, num_b, num_a - num_b))
+    btn_img_1.config(file='pic/start.gif')
+    btn_1.config(command=set_time)
+       
 
-def Quit(window):
-    window.destroy()
-    
+btn_1 = Button(image=btn_img_1, bg='black', activebackground='black',\
+               borderwidth=0, command=set_time)
+btn_1.grid(row=5)
 
-bnt_1 = Button(text='Start Game', width=50, command=set_time)
-bnt_1.grid(row=5)
-
-bnt_2 = Button(text='Quit', width=50, command=root.destroy)
-bnt_2.grid(row=6)
+btn_2 = Button(image=btn_img_2, bg='black', activebackground='black',\
+               borderwidth=0, command=root.destroy)
+btn_2.grid(row=6)
 
 root.mainloop()
